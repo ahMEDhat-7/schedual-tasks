@@ -21,8 +21,8 @@ const getDateFormatted = () => {
 
 // Every 10 sec
 const cronExpression = "*/10 * * * * *";
+const db = "./src/db";
 
-const db = "/home/ahmedhat/Projects/microservices/schedual-tasks/src/db";
 const isValid = cron.validate(cronExpression);
 
 const backUp = async () => {
