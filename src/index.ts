@@ -1,30 +1,46 @@
+import { writeFile } from "fs";
 import cron from "node-cron";
 
+const getDateFormatted = () => {
+    const date = new Date();
 
-const cronExpression = "*/5 * * * * *";
+    const ss = String(date.getSeconds()).padStart(2, '0');
+    const mm = String(date.getMinutes()).padStart(2, '0');
+    const hh = String(date.getHours()).padStart(2, '0');
 
+    const DD = String(date.getDate()).padStart(2, '0');
+    const MM = String(date.getMonth() + 1).padStart(2, '0');
+    const YY = String(date.getFullYear());
+
+    const formatted = `${ss}:${mm}:${hh}_${DD}-${MM}-${YY}`;
+
+    return formatted;
+
+}
+
+
+// Every 10 sec
+const cronExpression = "*/10 * * * * *";
+
+const db = "/home/ahmedhat/Projects/microservices/schedual-tasks/src/db";
 const isValid = cron.validate(cronExpression);
 
+const backUp = async () => {
+    const fileName = `${db}/backup_${getDateFormatted()}`;
+    writeFile(fileName, `backup created at ${getDateFormatted()}`, { flag: "w+" }, (err: any) => {
+        if (err) {
+            console.error(err);
+        } else {
+            console.log("backup created");
+        }
+    });
+}
 
-const getReports = (name:string)=>{
-    console.log(`${name} is schedualled`);
-} 
 
-const names: string[] = ["Report1","Report2","Report3"];
-let runs = 0;
+const task = cron.schedule(cronExpression, () => {
+    backUp();
 
-const task = cron.schedule(cronExpression,()=>{  
-    getReports(names[runs] as string);
-    runs = (runs +1 ) % names.length;
 });
 
 
 task.start();
-
-
-setTimeout(()=>{
-    task.stop();
-    console.log("Task Stopped");
-    
-},6000)
-
