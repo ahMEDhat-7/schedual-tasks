@@ -10,7 +10,10 @@ A backend service for managing and executing scheduled tasks using cron expressi
 - TypeScript support with strict type checking
 - Development and production modes
 
-## Installation
+
+
+## Local Installation
+
 
 ```bash
 pnpm install
@@ -40,6 +43,15 @@ Start the compiled application:
 
 ```bash
 pnpm start
+```
+
+## 🐳 Docker Containerization
+
+### Building Docker Images
+
+```bash
+# Build Schedual Task Container
+docker build -t scdual-tasks-container .
 ```
 
 ## Project Structure
